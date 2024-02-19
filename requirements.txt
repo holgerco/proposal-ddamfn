@@ -3,6 +3,7 @@ pandas
 scikit-learn
 matplotlib
 tqdm
-torch
-torchvision
+torch --index-url https://download.pytorch.org/whl/cpu
+torchvision --index-url https://download.pytorch.org/whl/cpu
 pillow
+# pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu

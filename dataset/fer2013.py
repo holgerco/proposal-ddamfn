@@ -1,43 +1,40 @@
 import os
 from itertools import islice
 
-from utils import Utils
+from utils import Utils, Dataset_Info
 from .base import BaseDataset
-from path.path import PATH
 from typing import *
 import csv
-
-path = PATH()
 
 
 class Fer2013(BaseDataset):
 
     def __init__(
             self,
-            root: str,
+            info: Dataset_Info = Utils.fer2013(),
             loader: Optional[Callable] = None,
             transform: Optional[Callable] = None,
             target_transform: Optional[Callable] = None,
+
     ) -> None:
+        root = os.path.join(info.data_file, info.csv_file)
         super().__init__(root, transform=transform, target_transform=target_transform)
-        self.classes, self.class_to_idx = self.find_classes()
-        self.samples, self.targets = self.make_dataset()
+        self.classes, self.class_to_idx = self.find_classes(info)
+        self.samples, self.targets = self.make_dataset(info)
 
         if loader:
             self.loader = loader
         else:
             self.loader = self._default_loader
 
-    def find_classes(self) -> tuple[list[str], dict[str, int]]:
-        classes = ['angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral']
+    def find_classes(self, info) -> tuple[list[str], dict[str, int]]:
+        classes = info.categories
 
         class_to_idx = {cls_name: i for i, cls_name in enumerate(classes)}
 
         return classes, class_to_idx
 
-    def make_dataset(
-            self
-    ) -> tuple[list[tuple[str, int]], list[int]]:
+    def make_dataset(self, info) -> tuple[list[tuple[str, int]], list[int]]:
         samples = []
         targets = []
         index = 0
@@ -45,12 +42,16 @@ class Fer2013(BaseDataset):
             fer_rows = csv.reader(fer2013, delimiter=',')
             for row in islice(fer_rows, 1, None):
                 label = row[0]
-                # image = Utils.str_to_image(row[1]) #FIXME
-                image_path = os.path.join('static/fer2013', row[2], f"{row[2]}{index}.jpg")
-                # image.save(image_path, compress_level=0) #FIXME
-                item = (image_path, label)
+                file_name = f"fer{str(index).zfill(7)}.jpg"
+                folder = row[2].lower().capitalize()
+                Utils.folder_exists_or_create(os.path.join(info.data_file, 'usage_separated', folder))
+                image_path = os.path.join(info.data_file, 'usage_separated', folder, file_name)
+                if not Utils.file_exists(image_path):
+                    image = Utils.str_to_image(row[1])
+                    image.save(image_path, compress_level=0)
+                item = (image_path, int(label))
                 samples.append(item)
-                targets.append(label)
+                targets.append(int(label))
                 index += 1
         return samples, targets
 
