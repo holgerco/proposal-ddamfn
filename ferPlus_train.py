@@ -1,3 +1,4 @@
+import collections
 import os
 import sys
 
@@ -11,12 +12,13 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import torch.utils.data as data
-from torchvision import transforms, datasets
+from torchvision import transforms
 
 from sklearn.metrics import balanced_accuracy_score
 import matplotlib.pyplot as plt
 import itertools
 
+from dataset.ferplus import FerPlus, TrainFerPlus, ValidationFerPlus
 from networks.DDAM import DDAMNet
 import torch.nn.functional as F
 from sklearn.metrics import confusion_matrix
@@ -26,7 +28,7 @@ eps = sys.float_info.epsilon
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--fer_path', type=str, default='/data/ferPlus/', help='ferPlus-DB dataset path.')
+    parser.add_argument('--fer_path', type=str, default=None, help='ferPlus-DB dataset path.')
     parser.add_argument('--batch_size', type=int, default=256, help='Batch size.')
     parser.add_argument('--lr', type=float, default=0.01, help='Initial learning rate for sgd.')
     parser.add_argument('--workers', default=8, type=int, help='Number of data loading workers.')
@@ -96,9 +98,11 @@ def plot_confusion_matrix(
 
 class_names = ['Neutral', 'Happy', 'Sad', 'Surprise', 'Fear', 'Disgust', 'Angry', 'Contempt']
 
+Args_Info = collections.namedtuple("Args_Info", ["fer_path", "batch_size", "lr", "workers", "epochs", "num_head"])
+
 
 def run_training():
-    args = parse_args()
+    args = Args_Info(fer_path=None, batch_size=256, lr=0.01, workers=8, epochs=1, num_head=2)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     if torch.cuda.is_available():
@@ -124,7 +128,8 @@ def run_training():
         transforms.RandomErasing(scale=(0.02, 0.25)),
     ])
 
-    train_dataset = datasets.ImageFolder(f'{args.fer_path}/train', transform=data_transforms)
+    train_dataset = TrainFerPlus(transform=data_transforms)
+    # train_dataset = datasets.ImageFolder(f'{args.fer_path}/train', transform=data_transforms)
 
     print('Whole train set size:', train_dataset.__len__())
 
@@ -133,7 +138,7 @@ def run_training():
         batch_size=args.batch_size,
         num_workers=args.workers,
         shuffle=True,
-        pin_memory=True
+        pin_memory=False
     )
 
     data_transforms_val = transforms.Compose([
@@ -144,7 +149,7 @@ def run_training():
             std=[0.229, 0.224, 0.225])]
     )
 
-    val_dataset = datasets.ImageFolder(f'{args.fer_path}/test', transform=data_transforms_val)
+    val_dataset = ValidationFerPlus(transform=data_transforms_val)
 
     print('Validation set size:', val_dataset.__len__())
 
@@ -153,7 +158,7 @@ def run_training():
         batch_size=args.batch_size,
         num_workers=args.workers,
         shuffle=False,
-        pin_memory=True
+        pin_memory=False
     )
 
     criterion_cls = torch.nn.CrossEntropyLoss()

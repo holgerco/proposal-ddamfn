@@ -15,7 +15,6 @@ class Fer2013(BaseDataset):
             loader: Optional[Callable] = None,
             transform: Optional[Callable] = None,
             target_transform: Optional[Callable] = None,
-
     ) -> None:
         root = os.path.join(info.data_file, info.csv_file)
         super().__init__(root, transform=transform, target_transform=target_transform)
