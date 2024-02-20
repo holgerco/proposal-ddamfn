@@ -52,6 +52,8 @@ class Fer2013(BaseDataset):
                 samples.append(item)
                 targets.append(int(label))
                 index += 1
+                if len(samples) >= 1000:
+                    break
         return samples, targets
 
     def __getitem__(self, index: int) -> Tuple[Any, Any]:

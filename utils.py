@@ -13,7 +13,8 @@ class Utils:
         return Dataset_Info(
             data_file='/home/holger/Desktop/AI/vision/datasets/Fer2013',
             categories=['angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral'],
-            csv_file="fer2013.csv"
+            csv_file="fer2013.csv",
+            # data_file='/content/datasets/Fer2013',
         )
 
     @staticmethod
@@ -21,7 +22,8 @@ class Utils:
         return Dataset_Info(
             data_file='/home/holger/Desktop/AI/vision/datasets/FerPlus',
             categories=['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear', 'contempt'],
-            csv_file="ferplus.csv"
+            csv_file="ferplus.csv",
+            # data_file='/content/datasets/FerPlus',
         )
 
     @staticmethod
