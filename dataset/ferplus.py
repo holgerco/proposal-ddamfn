@@ -36,7 +36,7 @@ class FerPlus(Fer2013):
                 # label = list(map(float, fer_plus_row[2:len(fer_plus_row)])) # TODO multiple labels image.
                 labels = list(map(float, fer_plus_row[2:len(fer_plus_row)]))
                 label = self.max_voted_label(labels)
-                if label > len(self.classes):
+                if label >= len(self.classes):
                     index += 1
                     continue
 
@@ -58,8 +58,8 @@ class FerPlus(Fer2013):
                 samples.append(item)
                 targets.append(label)
                 index += 1
-                if len(samples) >= 10:
-                    break
+                # if len(samples) >= 10:
+                #     break
         return samples, targets
 
     def max_voted_label(self, labels):
@@ -102,7 +102,7 @@ class TrainFerPlus(FerPlus):
                 # label = list(map(float, fer_plus_row[2:len(fer_plus_row)])) # TODO multiple labels image.
                 labels = list(map(float, fer_plus_row[2:len(fer_plus_row)]))
                 label = self.max_voted_label(labels)
-                if label > len(self.classes):
+                if label >= len(self.classes):
                     index += 1
                     continue
 
@@ -116,8 +116,8 @@ class TrainFerPlus(FerPlus):
                 samples.append(item)
                 targets.append(label)
                 index += 1
-                if len(samples) >= 50:
-                    break
+                # if len(samples) >= 50:
+                #     break
         return samples, targets
 
 
@@ -154,7 +154,7 @@ class ValidationFerPlus(FerPlus):
                 # label = list(map(float, fer_plus_row[2:len(fer_plus_row)])) # TODO multiple labels image.
                 labels = list(map(float, fer_plus_row[2:len(fer_plus_row)]))
                 label = self.max_voted_label(labels)
-                if label > len(self.classes):
+                if label >= len(self.classes):
                     index += 1
                     continue
 
@@ -168,8 +168,8 @@ class ValidationFerPlus(FerPlus):
                 samples.append(item)
                 targets.append(label)
                 index += 1
-                if len(samples) >= 10:
-                    break
+                # if len(samples) >= 10:
+                #     break
         return samples, targets
 
 
@@ -220,6 +220,6 @@ class TestFerPlus(FerPlus):
                 samples.append(item)
                 targets.append(label)
                 index += 1
-                if len(samples) >= 10:
-                    break
+                # if len(samples) >= 10:
+                #     break
         return samples, targets

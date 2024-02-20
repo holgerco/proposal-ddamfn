@@ -12,7 +12,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import torch.utils.data as data
-from torchvision import transforms
+from torchvision import transforms, datasets
 
 from sklearn.metrics import balanced_accuracy_score
 import matplotlib.pyplot as plt
@@ -102,7 +102,7 @@ Args_Info = collections.namedtuple("Args_Info", ["fer_path", "batch_size", "lr",
 
 
 def run_training():
-    args = Args_Info(fer_path=None, batch_size=256, lr=0.01, workers=8, epochs=10, num_head=2)
+    args = Args_Info(fer_path=None, batch_size=2, lr=0.01, workers=8, epochs=10, num_head=2)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     if torch.cuda.is_available():
