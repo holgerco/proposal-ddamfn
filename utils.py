@@ -11,19 +11,19 @@ class Utils:
     @staticmethod
     def fer2013():
         return Dataset_Info(
-            data_file='/home/holger/Desktop/AI/vision/datasets/Fer2013',
+            # data_file='/home/holger/Desktop/AI/vision/datasets/Fer2013',
             categories=['angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral'],
             csv_file="fer2013.csv",
-            # data_file='/content/datasets/Fer2013',
+            data_file='/content/datasets/Fer2013',
         )
 
     @staticmethod
     def fer_plus():
         return Dataset_Info(
-            data_file='/home/holger/Desktop/AI/vision/datasets/FerPlus',
+            # data_file='/home/holger/Desktop/AI/vision/datasets/FerPlus',
             categories=['neutral', 'happiness', 'surprise', 'sadness', 'anger', 'disgust', 'fear', 'contempt'],
             csv_file="ferplus.csv",
-            # data_file='/content/datasets/FerPlus',
+            data_file='/content/datasets/FerPlus',
         )
 
     @staticmethod
