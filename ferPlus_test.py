@@ -1,3 +1,4 @@
+import collections
 import os
 import sys
 import argparse
@@ -56,9 +57,12 @@ def plot_confusion_matrix(cm, classes,
     plt.xlabel('Predicted', fontsize=18)
     plt.tight_layout()
 
-class_names = ['Neutral', 'Happy', 'Sad', 'Surprise', 'Fear', 'Disgust', 'Angry','Contempt']  
+Args_Info = collections.namedtuple("Args_Info", ["fer_path", "batch_size", "lr", "workers", "model_path", "num_head"])
+
+class_names = ['Neutral', 'Happy', 'Sad', 'Surprise', 'Fear', 'Disgust', 'Angry','Contempt']
+
 def run_test():
-    args = parse_args()
+    args = Args_Info(fer_path=None, batch_size=128, lr=0.01, workers=2, model_path=parse_args().model_path, num_head=2)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     model = DDAMNet(num_class=8,num_head=args.num_head)

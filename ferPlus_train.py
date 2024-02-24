@@ -102,7 +102,7 @@ Args_Info = collections.namedtuple("Args_Info", ["fer_path", "batch_size", "lr",
 
 
 def run_training():
-    args = Args_Info(fer_path=None, batch_size=128, lr=0.01, workers=2, epochs=80, num_head=2)
+    args = Args_Info(fer_path=None, batch_size=128, lr=0.01, workers=2, epochs=25, num_head=2)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     if torch.cuda.is_available():
@@ -249,7 +249,7 @@ def run_training():
                 "[Epoch %d] Validation accuracy:%.4f. bacc:%.4f. Loss:%.3f" % (epoch, acc, balanced_acc, running_loss))
             tqdm.write("best_acc:" + str(best_acc))
 
-            if acc > 0.905 and acc == best_acc:
+            if acc > 0.8 and acc == best_acc:
                 torch.save({'iter': epoch,
                             'model_state_dict': model.state_dict(),
                             'optimizer_state_dict': optimizer.state_dict(), },
