@@ -7,6 +7,8 @@ import numpy as np
 import torch
 from torchvision import transforms, datasets
 import torch.utils.data as data
+
+from dataset.ferplus import TestFerPlus
 from networks.DDAM import DDAMNet
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
@@ -77,7 +79,8 @@ def run_test():
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                  std=[0.229, 0.224, 0.225])])   
   
-    val_dataset = datasets.ImageFolder(f'{args.fer_path}/test', transform = data_transforms_val)    
+    # val_dataset = datasets.ImageFolder(f'{args.fer_path}/test', transform = data_transforms_val)
+    val_dataset = TestFerPlus(transform=data_transforms_val)
 
     print('Validation set size:', val_dataset.__len__())
     
