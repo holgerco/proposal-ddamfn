@@ -165,7 +165,7 @@ def run_training():
     criterion_at = AttentionLoss()
 
     params = list(model.parameters())
-    optimizer = torch.optim.Adam(params, lr=args.lr, weight_decay=1e-4)
+    optimizer = torch.optim.SparseAdam(params, lr=args.lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
 
     best_acc = 0
